@@ -126,13 +126,27 @@ def testClassification(w0,w1):
             element[i] = float(element[i])
         x[j][0].append(element)
         x[j].append(classify)
+
+        if classify == "Iris-setosa" :
+            classify = -1
+        elif classify == "Iris-versicolor" :
+            classify = 1
+        else :
+            classify = -1
+            
+        x[j].append(classify)
+        
+
+
+        
         j=j+1
     i=0
     for i in range(0, len(x)):
         
-        res=np.dot(np.transpose(w0),np.transpose(x[i][0]))
+        res0=np.dot(np.transpose(w0),np.transpose(x[i][0]))
+        res1=np.dot(np.transpose(w1),np.transpose(x[i][0]))
         
-        if(np.sign(res[0]) == x[i][1]):
+        if(np.sign(res0[0]) == x[i][1] and np.sign(res1[0]) == x[i][2]):
             print("correto")
         else:
             print("ERRROOOUUU")
