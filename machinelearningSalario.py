@@ -44,38 +44,58 @@ def randomData(linhas) :
 def regressao():
     arq = open('salaryData.txt', 'r')
     x = []
+    y = []
     texto = arq.readlines()
     arq.close()
     j=0
     for linha in texto :
-        x.append([])
-        x[j].append([])
+        y.append([])
         element = linha.split(',')
         pos = len(element)-1
-        classify = element[pos];
+        classify = element[pos]
         classify=classify[0:len(classify)-1]        
         element.pop(pos)
-        
+        classify = float(classify)
             
         for i in range(0,pos) :
             element[i] = float(element[i])
-        x[j][0].append(element)
-        x[j].append(classify)
+        x.append(element)
+        y[j].append(classify)
         j=j+1
-    w = [[1],[1],[1],[1],[1]]
-    i=0
+
+    pseudoInvX = np.linalg.pinv(x)
+    
+    return np.dot(pseudoInvX, y), x, y
+
+def testeRegressao() :
+    arq = open('salaryDataTest.txt', 'r')
+    x = []
+    y = []
+    texto = arq.readlines()
+    arq.close()
     j=0
-    sair=bool(1)
-    for i in range(0, len(x)):
-            
-        res=np.dot(np.transpose(w),np.transpose(x[i][0]))
-        if():
-            sair=bool(0)
-            w=w+x[i][1]*np.transpose(x[i][0])
-        print("resultado:", w)
-
-
-
+    for linha in texto :
+        element = linha.split(',')
+        pos = len(element)-1
+        classify = element[pos]
+        classify = classify[0:len(classify)-1]
+        element.pop(pos)
+        classify = float(classify)
+        for i in range(0,pos) :
+            element[i] = float(element[i])
+        x.append(element)
+        y.append(classify)
+    erro = 0
+    j=0
+    w, xtotal, ytotal = regressao()
+    n = len(x)
+    for element in x :
+        result = np.dot(np.transpose(w), np.transpose(element))
+        print(result[0], y[j])        
+        erro = pow(result[0] - y[j],2)
+        j=j+1
+    erro = erro/n
+    return erro
 
 
 
