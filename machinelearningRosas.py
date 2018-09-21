@@ -48,27 +48,61 @@ def classification() :
         x[j][0].append(element)
         x[j].append(classify)
         j=j+1
-    w = [[1],[1],[1],[1]]
+    w0 = [[1],[1],[1],[1]]
     i=0
     j=0
     while bool(1):
         sair=bool(1)
         for i in range(0, len(x)):
             
-            res=np.dot(np.transpose(w),np.transpose(x[i][0]))
+            res=np.dot(np.transpose(w0),np.transpose(x[i][0]))
             
             if(np.sign(res[0]) != x[i][1]):
                 sair=bool(0)
-                w=w+x[i][1]*np.transpose(x[i][0])
-        print("resultado:", w)
-        print(sair)
-        print(j)
+                w0=w0+x[i][1]*np.transpose(x[i][0])
+        if sair or j>100:
+            break
+        j=j+1
+
+    #aqui vai começar a verificar a segunda reta
+
+    j=0
+    for linha in texto :
+        element = linha.split(',')
+        pos = len(element)-1
+        classify = element[pos];
+        classify=classify[0:len(classify)-1]
+        if classify == "Iris-setosa" :
+            classify = -1
+        elif classify == "Iris-versicolor" :
+            classify = 1
+        else :
+            classify = -1
+        x[j].pop()
+        x[j].append(classify)
+        j=j+1
+    w1 = [[1],[1],[1],[1]]
+    i=0
+    j=0
+    while bool(1):
+        sair=bool(1)
+        for i in range(0, len(x)):
+            
+            res=np.dot(np.transpose(w1),np.transpose(x[i][0]))
+            
+            if(np.sign(res[0]) != x[i][1]):
+                sair=bool(0)
+                w1=w1+x[i][1]*np.transpose(x[i][0])
         if sair or j>100:
             print("aqui")
             break
         j=j+1
 
+    print("w0= " ,w0)
+    print("w1= " , w1)
+    testClassification(w0,w1)
 
+def testClassification(w0,w1):
     arq2 = open('irisDataTest.txt', 'r')
     x = []
     texto = arq2.readlines()
@@ -96,7 +130,7 @@ def classification() :
     i=0
     for i in range(0, len(x)):
         
-        res=np.dot(np.transpose(w),np.transpose(x[i][0]))
+        res=np.dot(np.transpose(w0),np.transpose(x[i][0]))
         
         if(np.sign(res[0]) == x[i][1]):
             print("correto")
