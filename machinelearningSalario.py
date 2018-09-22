@@ -91,13 +91,19 @@ def testeRegressao() :
     n = len(x)
     for element in x :
         result = np.dot(np.transpose(w), np.transpose(element))
-        print(result[0], y[j])        
-        erro = pow(result[0] - y[j],2)
+        print("valor encontrado = ", result[0]," || ", "valor esperado = ", y[j])        
+        erro = erro + pow(result[0] - y[j],2)
         j=j+1
-    erro = erro/n
-    return erro
+    print (erro/n)
 
-
-
+def calculaErro() :
+    w, x, y = regressao()
+    erro = 0
+    j=0
+    for line in x :
+        result = np.dot(np.transpose(w), np.transpose(line))
+        erro = erro + pow(result[0] - y[j], 2)
+        j=j+1
+    return erro / len(x)
 
         
